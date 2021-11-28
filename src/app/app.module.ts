@@ -1,3 +1,4 @@
+import { Promotion } from './shared/promotion';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,6 +26,8 @@ import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 
 import {DishService} from './services/dish.service';
+import {PromotionService} from './services/promotion.service';
+
 
 import {AppRoutingModule} from './app-routing/app-routing.module';
 
@@ -51,7 +54,10 @@ import {AppRoutingModule} from './app-routing/app-routing.module';
     MatButtonModule,
     AppRoutingModule
   ],
-  providers: [DishService]  ,
+  providers: [
+    DishService,
+    PromotionService,
+  ]  ,
   bootstrap: [AppComponent]
 })
 export class AppModule { }
