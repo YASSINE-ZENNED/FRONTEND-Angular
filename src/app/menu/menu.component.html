@@ -24,7 +24,7 @@
     </div>
     <mat-grid-list fxFlex cols="2" >
 
-    <app-dishdetail [dish]="selectedDish" ></app-dishdetail>
+    <app-dishdetail *ngIf="selectedDish" [dish]="selectedDish" ></app-dishdetail>
 
     </mat-grid-list>
 
