@@ -21,7 +21,7 @@ fxLayoutGap.xs="0">
         <mat-card-actions>
             <button mat-button class="btn ">LIKE</button>
             <button mat-button class="btn ">SHARE</button>
-
+            <button mat-button class="btn " (click)="goback()">BACK</button>
         </mat-card-actions>
     </mat-card>
 </div>
@@ -36,6 +36,7 @@ fxLayoutGap.xs="0">
           <p matLine>{{listComment.comment}}</p>
           <p matLine>{{listComment.rating}} Stars</p>
           <p matLine>--{{listComment.author}},{{listComment.date |date }}</p>
+
          </mat-list-item>
     </mat-list>
 
