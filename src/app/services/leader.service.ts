@@ -12,21 +12,21 @@ export class LeaderService {
 
   
 
-  getLeaders(): Leader[]{
+  getLeaders(): Promise <Leader[]>{
 
-    return LEADERS;
+    return Promise.resolve(LEADERS);
 
   }
 
-  getLeader(id: string):Leader{
+  getLeader(id: string):Promise<Leader>{
 
 
-    return LEADERS.filter((Leader)=> (Leader.id === id))[0];
+    return Promise.resolve(LEADERS.filter((Leader)=> (Leader.id === id))[0]);
   }
 
-  getFeaturedLeader(): Leader{
+  getFeaturedLeader(): Promise<Leader>{
 
-  return LEADERS.filter((Leader)=>Leader.featured)[0];
+  return Promise.resolve(LEADERS.filter((Leader)=>Leader.featured)[0]);
 
 }
 }
