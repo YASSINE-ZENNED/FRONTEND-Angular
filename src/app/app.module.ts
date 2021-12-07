@@ -28,6 +28,7 @@ import { AppComponent } from './app.component';
 
 import {MatGridListModule} from '@angular/material/grid-list';
 
+import {HttpClientModule} from '@angular/common/http';
 
 import { DishdetailComponent } from './dishdetail/dishdetail.component';
 import { MenuComponent } from './menu/menu.component';
@@ -44,6 +45,7 @@ import {LeaderService} from './services/leader.service';
 
 import {AppRoutingModule} from './app-routing/app-routing.module';
 import { LoginComponent } from './login/login.component';
+
 
 @NgModule({
   declarations: [
@@ -77,7 +79,8 @@ import { LoginComponent } from './login/login.component';
     MatSlideToggleModule,
     MatSelectModule,
     MatProgressSpinnerModule,
-    MatSliderModule
+    MatSliderModule,
+    HttpClientModule,
   ],
   providers: [
     DishService,

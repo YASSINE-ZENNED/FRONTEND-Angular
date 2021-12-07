@@ -1,12 +1,13 @@
 import { Comment } from './../shared/comment';
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit,ViewChild,Inject } from '@angular/core';
 import {Dish} from '../shared/dish';
 import { Params,ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { DishService } from '../services/dish.service';
 import { switchMap } from 'rxjs';
 import { FormBuilder,FormGroup,Validators } from '@angular/forms';
-import { DatePipe } from '@angular/common';
+
+
 
 
 
@@ -30,7 +31,14 @@ export class DishdetailComponent implements OnInit {
     date = new Date(Date.now());
 
 
-  constructor(private dishService: DishService,private location:Location,private route:ActivatedRoute,private fb:FormBuilder) {
+  constructor(private dishService: DishService,
+    private location:Location,
+    private route:ActivatedRoute,
+    private fb:FormBuilder,
+   
+
+    ) 
+    {
     this.CreateForm();
 
    }
@@ -72,7 +80,7 @@ export class DishdetailComponent implements OnInit {
   };
 
 
-
+  //ask about this
   ngOnInit(): void {
   this.dishService.getDishIds().subscribe((dishIds) => this.dishIds =dishIds);
    this.route.params.pipe(switchMap((params:Params) => this.dishService.getDish(params['id'])))
