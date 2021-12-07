@@ -10,22 +10,37 @@ import {Leader} from '../shared/leader';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+  dishErrMsg!: string;
+  leaderErrMsg!: string;
+  promotionErrMsg!: string;
 
-  
-  dish!:Dish;
-  promotion!:Promotion;
-  leader!:Leader;
+  dish!: Dish;
+  promotion!: Promotion;
+  leader!: Leader;
 
-  constructor(private DishService:DishService, private PromotionService:PromotionService,private LeaderService:LeaderService) { }
+  constructor(
+    private DishService: DishService,
+    private PromotionService: PromotionService,
+    private LeaderService: LeaderService
+  ) {}
 
   ngOnInit(): void {
+    this.DishService.getFeaturedDish().subscribe((dish) =>
+      this.dish = dish,
+       errmess => this.dishErrMsg = <any>errmess
+    );
+    this.PromotionService.getFeaturedPromotion().subscribe((promotion) =>
+      this.promotion = promotion,
+             (errmess) => (this.dishErrMsg = <any>errmess)
 
-  this.DishService.getFeaturedDish().subscribe((dish) => { this.dish = dish});
-  this.PromotionService.getFeaturedPromotion().subscribe((promotion) => {this.promotion =promotion});
-  this.LeaderService.getFeaturedLeader().subscribe((leader) => { this.leader =leader});
+    );
+    this.LeaderService.getFeaturedLeader().subscribe((leader) =>
+      this.leader = leader,
+             errmess => this.dishErrMsg = <any>errmess
+
+    );
   }
-
 }
