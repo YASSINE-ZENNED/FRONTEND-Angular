@@ -13,7 +13,7 @@ import {
   animate,
   transition,
 } from '@angular/animations';
-import { flyInOut } from '../animations/app-animation';
+import { flyInOut,expand } from '../animations/app-animation';
 
 @Component({
   selector: 'app-dishdetail',
@@ -37,7 +37,7 @@ import { flyInOut } from '../animations/app-animation';
       ),
       transition('* => *', animate('0.5s ease-in-out')),
     ]),
-    flyInOut(),
+    flyInOut(),expand()
   ],
   host: {
     '[@flyInOut]': 'true',
