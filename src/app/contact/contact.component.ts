@@ -1,15 +1,19 @@
-import { Component, OnInit ,ViewChild } from '@angular/core';
-import { FeedBack,ContactType } from '../shared/feedback';
-import { FormBuilder,FormGroup,Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FeedBack, ContactType } from '../shared/feedback';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { flyInOut } from '../animations/app-animation';
-
-
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { map, catchError } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
+import { ProcessHTTPMsgService } from '../services/process-httpmsg.service';
+import { of, Observable } from 'rxjs';
+import { expand } from '../animations/app-animation';
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
-  animations: [flyInOut()],
+  animations: [flyInOut(), expand()],
   host: {
     '[@flyInOut]': 'true',
     style: 'display:block',
@@ -18,7 +22,10 @@ import { flyInOut } from '../animations/app-animation';
 export class ContactComponent implements OnInit {
   feedbackForm!: FormGroup;
   feedback!: FeedBack;
+  feedbackcopy!: FeedBack;
+  feedbackcopy1!: FeedBack;
   contacttype = ContactType;
+  reqsent: boolean = false;
 
   @ViewChild('fform') feedbackFormDirective: any;
 
@@ -50,7 +57,11 @@ export class ContactComponent implements OnInit {
     },
   };
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private processHTTPMsgService: ProcessHTTPMsgService
+  ) {
     this.CreateForm();
   }
 
@@ -110,9 +121,30 @@ export class ContactComponent implements OnInit {
     }
   }
 
+  putFeedback(feedback: FeedBack): Observable<FeedBack> {
+    return this.http
+      .post<FeedBack>(environment.baseUrl + 'feedback/', feedback)
+      .pipe(catchError(this.processHTTPMsgService.handelError));
+  }
+
   onSubmit() {
     this.feedback = this.feedbackForm.value;
-    console.log(this.feedback);
+
+    this.putFeedback(this.feedback).subscribe((feedback) => {
+
+          // <<<---using ()=> syntax
+      this.feedbackcopy = feedback;
+
+
+      setTimeout(() => {
+        // <<<---using ()=> syntax
+        this.reqsent = true;
+      }, 5000);
+
+
+    });
+    
+
     this.feedbackForm.reset({
       firstname: '',
       lastname: '',

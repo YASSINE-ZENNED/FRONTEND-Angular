@@ -41,7 +41,8 @@ export class DishService {
     return this.http
       .get<Dish[]>(environment.baseUrl + 'dishes?featured=true')
       .pipe(
-        map((dishes) => dishes[0]),map((dish) => {
+        map((dishes) => dishes[0]),
+        map((dish) => {
           dish.image = `${environment.baseUrl}${dish.image}`;
           return dish;
         })
@@ -52,8 +53,8 @@ export class DishService {
       map((dishes) => dishes.map((dish) => dish.id)),
       catchError((error) => error)
     );
-
   }
+
   putDish(dish: Dish): Observable<Dish> {
     const httpOptions = {
       headers: new HttpHeaders({

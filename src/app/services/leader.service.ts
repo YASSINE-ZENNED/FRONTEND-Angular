@@ -4,24 +4,50 @@ import { LEADERS } from '../shared/leaders';
 import { of, Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { map, catchError } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { ProcessHTTPMsgService } from './process-httpmsg.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LeaderService {
-  constructor() {}
+  constructor(
+    private http: HttpClient,
+    private processHTTPMsgService: ProcessHTTPMsgService
+  ) {}
 
   getLeaders(): Observable<Leader[]> {
-    return of(LEADERS).pipe(delay(2000));
-  }
-
-  getLeader(id: string): Observable<Leader> {
-    return of(LEADERS.filter((Leader) => Leader.id === id)[0]).pipe(
-      delay(2000)
+    return this.http.get<Leader[]>(environment.baseUrl + 'leadership').pipe(
+      map((Leaders) => {
+        Leaders.forEach((Leader) => {
+          Leader.image = `${environment.baseUrl}${Leader.image}`;
+        });
+        return Leaders;
+      }),
+      catchError(this.processHTTPMsgService.handelError)
     );
   }
 
+  getLeader(id: string): Observable<Leader> {
+   return this.http.get<Leader>(environment.baseUrl + 'leadership/' + id).pipe(
+     map((Leader) => {
+       Leader.image = `${environment.baseUrl}${Leader.image}`;
+       return Leader;
+     }),
+     catchError(this.processHTTPMsgService.handelError)
+   );
+  }
+
   getFeaturedLeader(): Observable<Leader> {
-    return of(LEADERS.filter((Leader) => Leader.featured)[0]).pipe(delay(2000));
+     return this.http
+       .get<Leader[]>(environment.baseUrl + 'leadership?featured=true')
+       .pipe(
+         map((Leaders) => Leaders[0]),
+         map((Leader) => {
+           Leader.image = `${environment.baseUrl}${Leader.image}`;
+           return Leader;
+         })
+       );
   }
 }

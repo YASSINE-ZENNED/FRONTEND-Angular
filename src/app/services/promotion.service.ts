@@ -1,33 +1,56 @@
 import { Injectable } from '@angular/core';
 import { Promotion } from '../shared/promotion';
 import { PROMOTIONS } from '../shared/promotions';
+import { environment } from '../../environments/environment';
+import { ProcessHTTPMsgService } from './process-httpmsg.service';
 
-import {of , Observable} from 'rxjs';
-import  {delay} from'rxjs/operators';
-
+import { of, Observable } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PromotionService {
+  constructor(
+    private http: HttpClient,
+    private processHTTPMsgService: ProcessHTTPMsgService
+  ) {}
 
-  constructor() { }
-
-
-  getPromotions():Observable<Promotion[]> {
-    return of(PROMOTIONS).pipe(delay(2000));
-
+  getPromotions(): Observable<Promotion[] > {
+    return this.http.get<Promotion[]>(environment.baseUrl + 'promotion').pipe(
+      map((Promotions) => {
+        Promotions.forEach((Promotion) => {
+          Promotion.image = `${environment.baseUrl}${Promotion.image}`;
+        });
+        return Promotions;
+      }),
+      catchError(this.processHTTPMsgService.handelError)
+    );
   }
 
-  getPromotion(id: string):Observable<Promotion> {
-
-    return of(PROMOTIONS.filter((promo) => (promo.id === id))[0]).pipe(delay(2000));
+  getPromotion(id: string): Observable<Promotion> {
+    return this.http
+      .get<Promotion>(environment.baseUrl + 'Promotion/' + id)
+      .pipe(
+        map((Promotion) => {
+          Promotion.image = `${environment.baseUrl}${Promotion.image}`;
+          return Promotion;
+        }),
+        catchError(this.processHTTPMsgService.handelError)
+      );
   }
 
-  getFeaturedPromotion():Observable<Promotion> {
-    return of(PROMOTIONS.filter((promotion) => promotion.featured)[0]).pipe(delay(2000));
-
-
-
+  getFeaturedPromotion(): Observable<Promotion> {
+    return this.http
+      .get<Promotion[]>(environment.baseUrl + 'Promotions?featured=true')
+      .pipe(
+        map((Promotions) => Promotions[0]),
+        map((Promotion) => {
+          Promotion.image = `${environment.baseUrl}${Promotion.image}`;
+          return Promotion;
+        })
+      );
   }
 }
