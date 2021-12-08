@@ -13,6 +13,7 @@ import {
   animate,
   transition,
 } from '@angular/animations';
+import { flyInOut } from '../animations/app-animation';
 
 @Component({
   selector: 'app-dishdetail',
@@ -36,7 +37,12 @@ import {
       ),
       transition('* => *', animate('0.5s ease-in-out')),
     ]),
+    flyInOut(),
   ],
+  host: {
+    '[@flyInOut]': 'true',
+    style: 'display:block',
+  },
 })
 export class DishdetailComponent implements OnInit {
   commentForm!: FormGroup;
