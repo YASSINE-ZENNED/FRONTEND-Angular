@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "variables";
+@import "../node_modules/font-awesome/scss/font-awesome";
+
 
 // some basic resets
 body {
@@ -9,11 +13,22 @@ body {
 }
 .container {
   margin: 20px;
-  display: felx;
+  display: flex;
 }
 
 .flex-spacer {
   flex: 1 1 auto;
+}
+
+.highlight {
+    background-color: bisque;
+    border: 1px solid blueviolet;
+    z-index: 1;
+    transform: scale(1.02);
+    -webkit-transform: scale(1.02);
+    -moz-transform: scale(1.02);
+    -ms-transform: scale(1.02);
+    -o-transform: scale(1.02);
 }
 
 .background-primary {
@@ -26,8 +41,3 @@ body {
   color:#FFFFFF;
 }
 
-
-
-@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
-@import "variables";
-@import "../node_modules/font-awesome/scss/font-awesome";
