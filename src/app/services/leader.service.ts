@@ -18,7 +18,7 @@ export class LeaderService {
   ) {}
 
   getLeaders(): Observable<Leader[]> {
-    return this.http.get<Leader[]>(environment.baseUrl + 'leadership').pipe(
+    return this.http.get<Leader[]>(environment.baseUrl + 'leader').pipe(
       map((Leaders) => {
         Leaders.forEach((Leader) => {
           Leader.image = `${environment.baseUrl}${Leader.image}`;
@@ -30,24 +30,24 @@ export class LeaderService {
   }
 
   getLeader(id: string): Observable<Leader> {
-   return this.http.get<Leader>(environment.baseUrl + 'leadership/' + id).pipe(
-     map((Leader) => {
-       Leader.image = `${environment.baseUrl}${Leader.image}`;
-       return Leader;
-     }),
-     catchError(this.processHTTPMsgService.handelError)
-   );
+    return this.http.get<Leader>(environment.baseUrl + 'leader/' + id).pipe(
+      map((Leader) => {
+        Leader.image = `${environment.baseUrl}${Leader.image}`;
+        return Leader;
+      }),
+      catchError(this.processHTTPMsgService.handelError)
+    );
   }
 
   getFeaturedLeader(): Observable<Leader> {
-     return this.http
-       .get<Leader[]>(environment.baseUrl + 'leadership?featured=true')
-       .pipe(
-         map((Leaders) => Leaders[0]),
-         map((Leader) => {
-           Leader.image = `${environment.baseUrl}${Leader.image}`;
-           return Leader;
-         })
-       );
+    return this.http
+      .get<Leader[]>(environment.baseUrl + 'leader?featured=true')
+      .pipe(
+        map((Leaders) => Leaders[0]),
+        map((Leader) => {
+          Leader.image = `${environment.baseUrl}${Leader.image}`;
+          return Leader;
+        })
+      );
   }
 }
